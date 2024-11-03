@@ -1,18 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance Log</title>
-    <link rel="stylesheet" href="static\css\style.css">
+    <title>Face Recognition Attendance</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
+
 <body>
-    <h1>Attendance Log</h1>
+
+    <!-- Top Header -->
+    <header>
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        <h1>Face Recognition Attendance System</h1>
+    </header>
+
+    <!-- Container for Sidebar and Content -->
+    <div class="container">
+        <!-- Collapsible Vertical Sidebar -->
+        <nav class="sidebar" id="sidebar">
+
+            <ul>
+                <li>
+
+                    <a href="{{ url_for('home') }}">
+                        <span class="material-symbols-outlined">
+                            home
+                        </span>
+                        <span class="link-text">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('index') }}">
+                        <span class="material-symbols-outlined">
+                            scan
+                        </span>
+                        <span class="link-text">Face Recognition</span>
+                        
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('attendance') }}">
+                        <span class="material-symbols-outlined">
+                        bar_chart_4_bars
+                        </span>
+                        <span class="link-text">Attendance Logs</span>
+                        
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('capture') }}">
+                        <span class="material-symbols-outlined">
+                        photo_camera
+                        </span>
+                        <span class="link-text">Capture Face</span>
+                        
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <canvas id="attendanceChart" style="max-width: 300px; max-height: 300px; width: 100%; height: auto;"></canvas>
+            <h1>Attendance Log</h1>
     <table>
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Timestamp</th>
+                <th>Present</th>
+                <th>View Profile</th>
             </tr>
         </thead>
         <tbody>
@@ -20,10 +81,63 @@
             <tr>
                 <td>{{ row[0] }}</td>
                 <td>{{ row[1] }}</td>
+                <td>
+                    {% if row[1].hour == 8 and row[1].minute >= 0 and row[1].minute < 60 %}
+                        Present
+                    {% else %}
+                        Absent
+                    {% endif %}
+                </td>
+                <td><a href="">View Profile</a></td> <!-- Assuming row[2] contains the user ID -->
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <a href="{{ url_for('index') }}">Back to Home</a>
+        </div>
+    </div>
+
 </body>
+
+<script>
+   const attendanceData = {{ attendance_data | tojson }};
+
+    // Calculate total present and absent
+    const totalPresent = attendanceData.filter(status => status).length;
+    const totalAbsent = attendanceData.length - totalPresent; 
+
+    // Initialize the chart
+    const ctx = document.getElementById('attendanceChart').getContext('2d');
+    const attendanceChart = new Chart(ctx, {
+        type: 'doughnut', 
+        data: {
+            labels: ['Present', 'Absent'],
+            datasets: [{
+                label: 'Attendance',
+                data: [totalPresent, totalAbsent],
+                backgroundColor: ['#4CAF50', '#f44336'], 
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Attendance Summary'
+                }
+            }
+        }
+    });
+</script>
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('collapsed');
+    }
+</script>
+
 </html>

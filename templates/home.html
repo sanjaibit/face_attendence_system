@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition Attendance</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+
+<body>
+
+    <!-- Top Header -->
+    <header>
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        <h1>Face Recognition Attendance System</h1>
+    </header>
+
+    <!-- Container for Sidebar and Content -->
+    <div class="container">
+        <!-- Collapsible Vertical Sidebar -->
+        <nav class="sidebar" id="sidebar">
+
+            <ul>
+                <li>
+
+                    <a href="{{ url_for('home') }}">
+                        <span class="material-symbols-outlined">
+                            home
+                        </span>
+                        <span class="link-text">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('index') }}">
+                        <span class="material-symbols-outlined">
+                            scan
+                        </span>
+                        <span class="link-text">Face Recognition</span>
+                        
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('attendance') }}">
+                        <span class="material-symbols-outlined">
+                        bar_chart_4_bars
+                        </span>
+                        <span class="link-text">Attendance Logs</span>
+                        
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('capture') }}">
+                        <span class="material-symbols-outlined">
+                        photo_camera
+                        </span>
+                        <span class="link-text">Capture Face</span>
+                        
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <h2 style="color: #2c3e50; text-align: center; font-size: 2.5rem; margin-bottom: 2rem; font-family: 'Segoe UI', Arial, sans-serif; border-bottom: 3px solid #3498db; padding-bottom: 1rem;">
+                Face Recognition Attendance System
+            </h2>
+            
+            <div style="background-color: #fff; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+                <p style="font-size: 1.1rem; line-height: 1.6; color: #34495e; text-align: center; margin-bottom: 1.5rem;">
+                    Experience the future of attendance management with our cutting-edge facial recognition system. 
+                    Access real-time recognition, detailed attendance logs, comprehensive user management, and automated reporting features.
+                </p>
+            </div>
+        
+            <section style="background-color: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: #2c3e50; font-size: 1.8rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #3498db;">
+                        Project Aim
+                    </h3>
+                    <p style="color: #34495e; line-height: 1.6; font-size: 1.1rem;">
+                        To revolutionize traditional attendance systems by implementing an advanced face recognition solution that ensures:
+                        <ul style="list-style-type: none; padding-left: 1.5rem; margin-top: 1rem;">
+                            <li style="margin-bottom: 0.5rem; color: #34495e;">✓ Secure and reliable user authentication</li>
+                            <li style="margin-bottom: 0.5rem; color: #34495e;">✓ Automated real-time tracking</li>
+                            <li style="margin-bottom: 0.5rem; color: #34495e;">✓ Accurate attendance management</li>
+                        </ul>
+                    </p>
+                </div>
+        
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: #2c3e50; font-size: 1.8rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #3498db;">
+                        Key Objectives
+                    </h3>
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        <li style="margin-bottom: 1rem; padding: 0.5rem 1rem; background-color: #f8f9fa; border-left: 4px solid #3498db; border-radius: 4px;">
+                            <span style="color: #2c3e50; font-weight: bold;">Real-Time Recognition:</span>
+                            <span style="color: #34495e;"> Instantaneous face detection and recognition capabilities</span>
+                        </li>
+                        <li style="margin-bottom: 1rem; padding: 0.5rem 1rem; background-color: #f8f9fa; border-left: 4px solid #3498db; border-radius: 4px;">
+                            <span style="color: #2c3e50; font-weight: bold;">Precision Logging:</span>
+                            <span style="color: #34495e;"> Accurate and automated attendance record maintenance</span>
+                        </li>
+                        <li style="margin-bottom: 1rem; padding: 0.5rem 1rem; background-color: #f8f9fa; border-left: 4px solid #3498db; border-radius: 4px;">
+                            <span style="color: #2c3e50; font-weight: bold;">System Integration:</span>
+                            <span style="color: #34495e;"> Seamless compatibility with existing infrastructure</span>
+                        </li>
+                        <li style="margin-bottom: 1rem; padding: 0.5rem 1rem; background-color: #f8f9fa; border-left: 4px solid #3498db; border-radius: 4px;">
+                            <span style="color: #2c3e50; font-weight: bold;">Report Generation:</span>
+                            <span style="color: #34495e;"> Automated and customizable attendance reports</span>
+                        </li>
+                    </ul>
+                </div>
+        
+                <div>
+                    <h3 style="color: #2c3e50; font-size: 1.8rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #3498db;">
+                        Development Team
+                    </h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                        <div style="padding: 1rem; background-color: #f8f9fa; border-radius: 8px; text-align: center;">
+                            <p style="margin: 0; color: #2c3e50; font-weight: bold;">Yeswanth S</p>
+                            <p style="margin: 0; color: #7f8c8d; font-size: 0.9rem;">7376222AD226</p>
+                        </div>
+                        <div style="padding: 1rem; background-color: #f8f9fa; border-radius: 8px; text-align: center;">
+                            <p style="margin: 0; color: #2c3e50; font-weight: bold;">Sanjai A</p>
+                            <p style="margin: 0; color: #7f8c8d; font-size: 0.9rem;">7376222AD190</p>
+                        </div>
+                        <div style="padding: 1rem; background-color: #f8f9fa; border-radius: 8px; text-align: center;">
+                            <p style="margin: 0; color: #2c3e50; font-weight: bold;">Selvakumar R</p>
+                            <p style="margin: 0; color: #7f8c8d; font-size: 0.9rem;">7376222AD199</p>
+                        </div>
+                        <div style="padding: 1rem; background-color: #f8f9fa; border-radius: 8px; text-align: center;">
+                            <p style="margin: 0; color: #2c3e50; font-weight: bold;">Prithiviraj S C</p>
+                            <p style="margin: 0; color: #7f8c8d; font-size: 0.9rem;">7376222AD176</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('collapsed');
+        }
+    </script>
+</body>
+
+</html>

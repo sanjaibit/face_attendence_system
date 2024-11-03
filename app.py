@@ -1,7 +1,9 @@
+import base64
+import os
 import cv2
 import numpy as np
 import face_recognition
-from flask import Flask, render_template, Response, redirect, url_for
+from flask import Flask, jsonify, render_template, Response, redirect, request, url_for
 import csv
 from datetime import datetime
 
@@ -58,6 +60,11 @@ def generate_frames():
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 @app.route('/')
+def home():
+    return render_template('home.html')
+
+
+@app.route('/index')
 def index():
     return render_template('index.html')
 
@@ -65,13 +72,52 @@ def index():
 def video_feed():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/profile')
+def pro():
+    pass
+
 @app.route('/attendance')
 def attendance():
     attendance_list = []
     with open('Attendance.csv', 'r') as f:
         reader = csv.reader(f)
         attendance_list = list(reader)
-    return render_template('attendance.html', attendance_list=attendance_list)
+    attendance_list = [i for i in attendance_list if i]  
+    attendance_data = []
+
+    for row in attendance_list:
+        timestamp_str = row[1] 
+        timestamp = datetime.strptime(timestamp_str, '%Y-%m-%d %H:%M:%S')
+        if timestamp.hour == 8 and 0 <= timestamp.minute < 60:
+            attendance_data.append(True)  
+        else:
+            attendance_data.append(False)  
+
+    return render_template('attendance.html', attendance_list=attendance_list,attendance_data=attendance_data)
+
+# Directory to save captured images
+IMAGE_SAVE_PATH = 'ImagesAttendance'
+if not os.path.exists(IMAGE_SAVE_PATH):
+    os.makedirs(IMAGE_SAVE_PATH)
+
+@app.route('/capture')
+def capture():
+    return render_template('capture.html')
+
+@app.route('/save_image', methods=['POST'])
+def save_image():
+    data = request.json
+    name = data['name']
+    img_data = data['image']
+
+    # Decode the base64 image and save it
+    img_data = base64.b64decode(img_data.split(',')[1])
+    img_filename = os.path.join(IMAGE_SAVE_PATH, f"{name}.png")
+    with open(img_filename, 'wb') as f:
+        f.write(img_data)
+
+    return jsonify({"status": "success", "message": f"Image saved as {img_filename}"})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
